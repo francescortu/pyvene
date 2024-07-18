@@ -1785,6 +1785,7 @@ class IntervenableModel(BaseModel):
         output_original_output: Optional[bool] = False,
         return_dict: Optional[bool] = None,
         use_cache: Optional[bool] = True,
+        output_attentions: Optional[bool] = None,
     ):
         """
         Main forward function that serves a wrapper to
@@ -1909,6 +1910,8 @@ class IntervenableModel(BaseModel):
                 model_kwargs["labels"] = labels
             if use_cache is not None and 'use_cache' in self.model.config.to_dict(): # for transformer models
                 model_kwargs["use_cache"] = use_cache
+            if output_attentions:
+                model_kwargs["output_attentions"] = output_attentions
 
             counterfactual_outputs = self.model(**base, **model_kwargs)
 
