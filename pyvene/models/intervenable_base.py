@@ -975,6 +975,7 @@ class IntervenableNdifModel(BaseModel):
         output_original_output: Optional[bool] = False,
         return_dict: Optional[bool] = None,
         use_cache: Optional[bool] = None,
+        output_attentions: Optional[bool] = None,
     ):
         activations_sources = source_representations
         if sources is not None and not isinstance(sources, list):
@@ -1019,6 +1020,8 @@ class IntervenableNdifModel(BaseModel):
                 model_kwargs["labels"] = labels
             if use_cache is not None and 'use_cache' in self.model.config.to_dict(): # for transformer models
                 model_kwargs["use_cache"] = use_cache
+            if output_attentions:
+                model_kwargs["output_attentions"] = output_attentions
 
             if self.mode == "parallel":
                 counterfactual_outputs = self._sync_forward_with_parallel_intervention(
